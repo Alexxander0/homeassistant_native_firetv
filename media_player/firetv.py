@@ -35,6 +35,8 @@ DEFAULT_NAME = 'Amazon Fire TV'
 DEFAULT_PORT = 5555
 DEFAULT_ADBKEY = ''
 
+ATTR_SCREEN_ON = 'screen_on'
+
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
     vol.Required(CONF_HOST): cv.string,
     vol.Optional(CONF_NAME, default=DEFAULT_NAME): cv.string,
@@ -238,3 +240,10 @@ class FireTVDevice(MediaPlayerDevice):
                 self._firetv.launch_app(source)
             else:
                 self._firetv.stop_app(source[1:].lstrip())
+
+    @property
+    def device_state_attributes(self):
+        """Return device specific state attributes."""
+        attributes = {ATTR_SCREEN_ON: self._firetv._screen_on}
+
+        return attributes
